@@ -270,7 +270,7 @@ BYTE* smoothingSerial(const BYTE *raw_intensity, const short maskSize, const int
 	return buffer;
 }
 
-BYTE * edgeDetectionSerial(const BYTE* intensityBuffer, const int width, const int height, float * aciDegerleri)
+BYTE * edgeDetectionSerial(const BYTE* intensityBuffer, const int width, const int height, float * angles)
 {
 	int * edge_ver = new int[width*height];
 	int * edge_hor = new int[width*height];
@@ -285,7 +285,7 @@ BYTE * edgeDetectionSerial(const BYTE* intensityBuffer, const int width, const i
 
 	int biggest = 255;
 	int virtualsize = size - width;
-	for (int i = width + 1; i < virtualsize; i += width)//resmin içiköþeler ve kenarlar hariç
+	for (int i = width + 1; i < virtualsize; i += width)//resmin içiköşeler ve kenarlar hariç
 	{
 		for (int j = i; j < i + width - 1; j++)
 		{
@@ -294,11 +294,11 @@ BYTE * edgeDetectionSerial(const BYTE* intensityBuffer, const int width, const i
 			edge_ver[j] = -intensityBuffer[j + width - 1] + intensityBuffer[j + width + 1] - 2 * intensityBuffer[j - 1] + 2 * intensityBuffer[j + 1]
 				- intensityBuffer[j + width - 1] + intensityBuffer[j + width + 1];
 			if (edge_ver[j] != 0)
-				aciDegerleri[j] = atan2((float)edge_hor[j], edge_ver[j]) * 180 / PI;
+				angles[j] = atan2((float)edge_hor[j], edge_ver[j]) * 180 / PI;
 			else
-				aciDegerleri[j] = atan2((float)edge_hor[j], 1) * 180 / PI;
-			if (aciDegerleri[j] < 0)
-				aciDegerleri[j] = (360 + aciDegerleri[j]);
+				angles[j] = atan2((float)edge_hor[j], 1) * 180 / PI;
+			if (angles[j] < 0)
+				angles[j] = (360 + angles[j]);
 			sum[j] = sqrt(pow((double)edge_hor[j], 2) + pow((double)edge_ver[j], 2));
 			if (sum[j]>biggest)  biggest = sum[j];
 
@@ -309,7 +309,7 @@ BYTE * edgeDetectionSerial(const BYTE* intensityBuffer, const int width, const i
 	delete[] edge_ver;
 
 	
-	for (int j = 0; j < width*height; j++)//resmin içiköþeler ve kenarlar hariç
+	for (int j = 0; j < width*height; j++)//resmin içiköşeler ve kenarlar hariç
 	{
 		//edgeimage[j] = (sum[j] * 255) / biggest;
 		edgeimage[j] = (sum[j] > biggest)? biggest : sum[j];
@@ -320,7 +320,7 @@ BYTE * edgeDetectionSerial(const BYTE* intensityBuffer, const int width, const i
 
 }
 
-BYTE * edgeDetectionParalel(const BYTE* intensityBuffer, const int width, const int height, float * aciDegerleri)
+BYTE * edgeDetectionParalel(const BYTE* intensityBuffer, const int width, const int height, float * angles)
 {
 	int * edge_ver = new int[width*height];
 	int * edge_hor = new int[width*height];
@@ -345,11 +345,11 @@ BYTE * edgeDetectionParalel(const BYTE* intensityBuffer, const int width, const 
 			edge_ver[j] = -intensityBuffer[j + width - 1] + intensityBuffer[j + width + 1] - 2 * intensityBuffer[j - 1] + 2 * intensityBuffer[j + 1]
 				- intensityBuffer[j + width - 1] + intensityBuffer[j + width + 1];
 			if (edge_ver[j] != 0)
-				aciDegerleri[j] = atan2((float)edge_hor[j], edge_ver[j]) * 180 / PI;
+				angles[j] = atan2((float)edge_hor[j], edge_ver[j]) * 180 / PI;
 			else
-				aciDegerleri[j] = atan2((float)edge_hor[j], 1) * 180 / PI;
-			if (aciDegerleri[j] < 0)
-				aciDegerleri[j] = (360 + aciDegerleri[j]);
+				angles[j] = atan2((float)edge_hor[j], 1) * 180 / PI;
+			if (angles[j] < 0)
+				angles[j] = (360 + angles[j]);
 			sum[j] = (int)sqrt(pow((double)edge_hor[j], 2) + pow((double)edge_ver[j], 2));
 			if (sum[j]>biggest)  biggest = sum[j];
 		}
