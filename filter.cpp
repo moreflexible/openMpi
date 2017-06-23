@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <windows.h>
 #include <math.h>
 #include <iostream>
@@ -286,7 +285,7 @@ BYTE * edgeDetectionSerial(const BYTE* intensityBuffer, const int width, const i
 
 	int biggest = 255;
 	int virtualsize = size - width;
-	for (int i = width + 1; i < virtualsize; i += width)//resmin içiköþeler ve kenarlar hariç
+	for (int i = width + 1; i < virtualsize; i += width)//resmin iÃ§ikÃ¶Ã¾eler ve kenarlar hariÃ§
 	{
 		for (int j = i; j < i + width - 1; j++)
 		{
@@ -310,7 +309,7 @@ BYTE * edgeDetectionSerial(const BYTE* intensityBuffer, const int width, const i
 	delete[] edge_ver;
 
 	
-	for (int j = 0; j < width*height; j++)//resmin içiköþeler ve kenarlar hariç
+	for (int j = 0; j < width*height; j++)//resmin iÃ§ikÃ¶Ã¾eler ve kenarlar hariÃ§
 	{
 		//edgeimage[j] = (sum[j] * 255) / biggest;
 		edgeimage[j] = (sum[j] > biggest)? biggest : sum[j];
