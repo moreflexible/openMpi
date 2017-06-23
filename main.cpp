@@ -1,8 +1,6 @@
-#include "stdafx.h"
 #include <iostream>
 #include <windows.h>
 #include <math.h>
-#include <fstream>
 #include "omp.h"
 #include <chrono>
 #include "filter.h"
